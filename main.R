@@ -1,36 +1,42 @@
-message <- "Hello world"
-print(message)
-
-
-# LÃ¤ser in csv filen.
+# Läser in csv filen.
 data <- read.csv2(file = "SUSsvaren.csv")
+head(data)
 
-# Normaliserar enkÃ¤tsvaren
-# Input 1-5 i enkÃ¤ten, output 0-100.
+# Normaliserar enkätsvaren
+# Input 1-5 i enkäten, output 0-100.
 
-# Skapar vektorer fÃ¶r att vÃ¤lja varannan kolumn i en dataframe
+# Skapar vektorer för att välja varannan kolumn i en dataframe
 columns_even <- c(FALSE, TRUE)
 columns_odd <- c(TRUE, FALSE)
 
-# frÃ¥gor med jÃ¤mna tal -> 5 - input (negativa frÃ¥gor
-# Subtrahera i tur och ordning varje elements vÃ¤rde frÃ¥n 5 i de jÃ¤mna kolumnerna
-5 - data[,columns_even]
+# Frågor med jämna tal -> 5 - input (negativa frågor).
+# Subtrahera i tur och ordning varje elements värde från 5 i de jämna kolumnerna
+# och kombinerar värden för svaren och multiplicerar med 2,5
+even <- 5 - data[,columns_even]
+head(even)
+even <- rowSums(even * 2.5)
+head(even)
 
-# FrÃ¥gor med udda tal -> input - 1  (positiva frÃ¥gor).
-# Subtrahera 1 frÃ¥n alla element i de udda kolumnerna
-data[,columns_odd] - 1
+# Frågor med udda tal -> input - 1  (positiva frågor).
+# Subtrahera 1 från alla element i de udda kolumnerna
+# och kombinerar värden för svaren och multiplicerar med 2,5
+odd <- data[,columns_odd] -1
+head(odd)
+odd <- rowSums(odd * 2.5)
+head(odd)
 
-# Svaren fÃ¶r varje frÃ¥ga adderas ihop och multipliceras med 2,5.
-sus_result <- rowSums(data * 2.5)
+# Svaren för de udda och jämna frågorna adderas ihop.
+sus_data <- odd + even
+head(sus_data)
 
 
-# BerÃ¤kna medelvÃ¤rdet av resultatet
-mean(sus_result)
-# BerÃ¤kna medianen av resultatet
-median(sus_result)
-# BerÃ¤kna standardavvikelsen av resultatet
-sd(sus_result)
-# BerÃ¤kna minimivÃ¤rdet av resultatet
-min(sus_result)
-# BerÃ¤kna maximivÃ¤rdet av resultatet
-max(sus_result)
+# Beräkna medelvärdet av resultatet
+mean(sus_data)
+# Beräkna medianen av resultatet
+median(sus_data)
+# Beräkna standardavvikelsen av resultatet
+sd(sus_data)
+# Beräkna minimivärdet av resultatet
+min(sus_data)
+# Beräkna maximivärdet av resultatet
+max(sus_data)
